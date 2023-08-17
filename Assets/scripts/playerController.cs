@@ -23,11 +23,19 @@ public class playerController : MonoBehaviour
     [SerializeField] private Transform sectionSpawn;
     [SerializeField] private GameObject sectionPref;
 
+    [Header("Touch Controls")]
+    private Vector2 startTouchPos;
+    private Vector2 endTouchPos;
+
+    Vector3 lastgyr;
+    Vector3 gyrAng;
+    [SerializeField] private float gyrSensitivity = 2;
+
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        Input.gyro.enabled = true;
     }
 
     // Update is called once per frame
@@ -49,27 +57,75 @@ public class playerController : MonoBehaviour
  
         }
 
-
-
-        if(Input.GetKey(KeyCode.S)){
-            duck();
-        }else{
-            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 1f, gameObject.transform.localScale.z);   
-
+        if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
+            startTouchPos = Input.GetTouch(0).position;
         }
 
-        if(Input.GetAxisRaw("Horizontal") != 0){
-            if(Input.GetAxisRaw("Horizontal") > 0){
-                sideMove(false);
-            }else{
-                sideMove(true);
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            endTouchPos = Input.GetTouch(0).position;
+
+            if (endTouchPos.y > startTouchPos.y){
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                duck();
             }
         }
 
-        if(Input.GetButton("Jump") && !isJumping){
-            upwards = true;
-            StartCoroutine(jumpTimer());
+        // if (Input.GetMouseButtonDown(0)){
+        //     startTouchPos = Input.mousePosition;
+        // }
+
+        // if (Input.GetMouseButtonUp(0))
+        // {
+        //     endTouchPos = Input.mousePosition;
+
+        //     if (endTouchPos.y > startTouchPos.y)
+        //     {
+        //         upwards = true;
+        //         StartCoroutine(jumpTimer());
+        //     }else if (endTouchPos.y < startTouchPos.y)
+        //     {
+        //         duck();
+        //     }
+        // }
+
+
+
+        // if(Input.GetKey(KeyCode.S)){
+        //     duck();
+        // }else{
+        //     gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 1f, gameObject.transform.localScale.z);   
+
+        // }
+
+        // if(Input.GetAxisRaw("Horizontal") != 0){
+        //     if(Input.GetAxisRaw("Horizontal") > 0){
+        //         sideMove(false);
+        //     }else{
+        //         sideMove(true);
+        //     }
+        // }
+
+        gyrAng = Input.gyro.attitude.eulerAngles;
+
+        if(Mathf.Abs(gyrAng.x - lastgyr.x) > gyrSensitivity){
+            if(gyrAng.x > lastgyr.x){
+                sideMove(false);
+                lastgyr = gyrAng;
+            }else{
+                sideMove(true);
+                lastgyr = gyrAng;
+            }
         }
+
+
+        // if(Input.GetButton("Jump") && !isJumping){
+        //     upwards = true;
+        //     StartCoroutine(jumpTimer());
+        // }
 
         if(isJumping){
             jump();
