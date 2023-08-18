@@ -169,4 +169,11 @@ public class playerController : MonoBehaviour
         
         startGyr = Input.gyro.attitude.eulerAngles;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Level"))
+        {
+            hp = 0;
+        }
+    }
 }
