@@ -14,6 +14,7 @@ public class LevelGenerate : MonoBehaviour
     [SerializeField] private Transform sectionSpawn;
     [SerializeField] private GameObject[] sectionPref;
 
+    [SerializeField]
     int numberOfPlainPlanes = 0;
 
     // Start is called before the first frame update
@@ -31,15 +32,27 @@ public class LevelGenerate : MonoBehaviour
 
         if (nextSection == null)
         {
-            int rand = Random.Range(0, 3);
-            nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+           // int rand = Random.Range(0, 3);
+            nextSection = Instantiate(sectionPref[3], sectionSpawn);
         }
         else if (currentSection.transform.position.x < -26)
         {
-            int rand = Random.Range(0, 3);
+            int rand;
             Destroy(currentSection);
             currentSection = nextSection;
-            nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+
+            if (numberOfPlainPlanes == 1)
+            {
+                rand = 3;
+                nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+                numberOfPlainPlanes = 0;
+            } else
+            {
+                rand = Random.Range(0, 3);
+                nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+                numberOfPlainPlanes++;
+            }
+            
         }
         else
         {
