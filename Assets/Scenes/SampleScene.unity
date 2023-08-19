@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentSection: {fileID: 1719668691}
   nextSection: {fileID: 0}
-  runSpeed: 3
+  runSpeed: 7
   sectionSpawn: {fileID: 2002979339}
   sectionPref:
   - {fileID: 426178462699225763, guid: 0b134f66d4ffa7641a6ac04cb9b8cb90, type: 3}
@@ -595,6 +595,7 @@ MonoBehaviour:
   sideSpeed: 3
   jumpHeight: 1.7
   jumpTime: 1.2
+  ducktime: 2
   currentSection: {fileID: 1719668691}
   nextSection: {fileID: 0}
   sectionSpawn: {fileID: 2002979339}
@@ -609,7 +610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186244780}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.39, y: 0, z: 0}
+  m_LocalPosition: {x: 2.39, y: 0, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1532085064}
