@@ -173,7 +173,7 @@ public class playerController : MonoBehaviour
     {
         if (collision.CompareTag("Level"))
         {
-            hp = 0;
+           // hp = 0;
         }
     }
 }
