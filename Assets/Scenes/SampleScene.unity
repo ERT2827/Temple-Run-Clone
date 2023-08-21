@@ -160,8 +160,8 @@ MonoBehaviour:
   - {fileID: 6247117646257000225, guid: df7486813020f75409cb68a60e211f63, type: 3}
   - {fileID: 9189059188385012141, guid: 369b40d0585e4b1428c95dc883d3c355, type: 3}
   - {fileID: 1693511082662722111, guid: 84c639ab51d53404eb34123b07c9bcfc, type: 3}
-  - {fileID: 1982317593577980959, guid: 6297fcbdca1d1b44589b3968d18ff73c, type: 3}
   - {fileID: 426178462699225763, guid: 0b134f66d4ffa7641a6ac04cb9b8cb90, type: 3}
+  - {fileID: 1982317593577980959, guid: 6297fcbdca1d1b44589b3968d18ff73c, type: 3}
   numberOfPlainPlanes: 0
 --- !u!4 &201565076
 Transform:
