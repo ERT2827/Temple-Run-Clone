@@ -48,7 +48,10 @@ public class LevelGenerate : MonoBehaviour
                 numberOfPlainPlanes = 0;
             } else
             {
-                rand = Random.Range(0, 3);
+                do
+                {
+                    rand = Random.Range(0, 5);
+                } while (rand == 3);
                 nextSection = Instantiate(sectionPref[rand], sectionSpawn);
                 numberOfPlainPlanes++;
             }

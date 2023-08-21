@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
-    [Header("Player stats")]
-    [SerializeField] private int hp = 1;
-    
-    
     [Header("Player Movement")]
     [SerializeField] private GameObject playerOBJ;
     [SerializeField] private float maxtravel = 2.5f;
@@ -170,12 +166,5 @@ public class playerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         
         startGyr = Input.gyro.attitude.eulerAngles;
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Level"))
-        {
-            hp = 0;
-        }
     }
 }
