@@ -8,9 +8,10 @@ public enum obstType
     duck,
     jump,
     turn,
-    sidestep
+    sidestep,
+    fall
 }
 
 public class obstacleType : MonoBehaviour{
-    public obstType thisType;
+    public obstType Type;
 }

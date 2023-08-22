@@ -6,7 +6,11 @@ using UnityEngine.UI;
 public class playerController : MonoBehaviour
 {
     [Header("Player stats")]
-    [SerializeField] private int hp = 1;
+    // [SerializeField] private int hp = 1;
+    public int currentScore;
+    public bool isDead = false;
+
+    [SerializeField] private Text scoreCounter;
     
     
     [Header("Player Movement")]
@@ -17,7 +21,9 @@ public class playerController : MonoBehaviour
     [SerializeField] private float jumpHeight = 2;
     [SerializeField] private float jumpTime = 2;
     bool upwards = true;
-    bool isJumping = false;
+    public bool isJumping = false;
+
+    public bool isSliding = false;
 
     [SerializeField] private float ducktime = 2f;
 
@@ -62,63 +68,15 @@ public class playerController : MonoBehaviour
     void Update()
     {
         //Mobile Controls
-        if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
-            startTouchPos = Input.GetTouch(0).position;
-        }
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            endTouchPos = Input.GetTouch(0).position;
-
-            if (endTouchPos.y > startTouchPos.y){
-                upwards = true;
-                StartCoroutine(jumpTimer());
-            }else if (endTouchPos.y < startTouchPos.y)
-            {
-                StartCoroutine(duck());
-            }
-        }
-        
-        gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
-
-        gyrAng = Input.gyro.attitude.eulerAngles;
-        
-        if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
-        {
-            float deltaAngle;
-            
-            if(gyrAng.x < maxtravel && maxOverflow){
-                float fakeAng = gyrAng.x + (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else if(gyrAng.x > (360 - maxtravel) && maxOverflow){
-                float fakeAng = gyrAng.x - (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else{
-                deltaAngle = startGyr.x - gyrAng.x;
-            }
-            
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
-
-
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
-        }else{
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
-        }
-
-        //PC Backup
-        // if (Input.GetMouseButtonDown(0)){
-        //     startTouchPos = Input.mousePosition;
+        // if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
+        //     startTouchPos = Input.GetTouch(0).position;
         // }
 
-        // if (Input.GetMouseButtonUp(0))
+        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         // {
-        //     endTouchPos = Input.mousePosition;
+        //     endTouchPos = Input.GetTouch(0).position;
 
-        //     if (endTouchPos.y > startTouchPos.y)
-        //     {
+        //     if (endTouchPos.y > startTouchPos.y){
         //         upwards = true;
         //         StartCoroutine(jumpTimer());
         //     }else if (endTouchPos.y < startTouchPos.y)
@@ -127,22 +85,70 @@ public class playerController : MonoBehaviour
         //     }
         // }
         
-        // if(Input.GetKey(KeyCode.S)){
-        //     StartCoroutine(duck())();
-        // }
+        // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
-        // if(Input.GetAxisRaw("Horizontal") != 0){
-        //     if(Input.GetAxisRaw("Horizontal") > 0){
-        //         sideMove(false);
+        // gyrAng = Input.gyro.attitude.eulerAngles;
+        
+        // if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
+        // {
+        //     float deltaAngle;
+            
+        //     if(gyrAng.x < maxtravel && maxOverflow){
+        //         float fakeAng = gyrAng.x + (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.x;
+        //     }else if(gyrAng.x > (360 - maxtravel) && maxOverflow){
+        //         float fakeAng = gyrAng.x - (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.x;
         //     }else{
-        //         sideMove(true);
+        //         deltaAngle = startGyr.x - gyrAng.x;
         //     }
+            
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
+
+
+        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
+        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
+        // }else{
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
         // }
 
-        // if(Input.GetButton("Jump") && !isJumping){
-        //     upwards = true;
-        //     StartCoroutine(jumpTimer());
-        // }
+        //PC Backup
+        if (Input.GetMouseButtonDown(0)){
+            startTouchPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            endTouchPos = Input.mousePosition;
+
+            if (endTouchPos.y > startTouchPos.y)
+            {
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                StartCoroutine(duck());
+            }
+        }
+        
+        if(Input.GetKey(KeyCode.S)){
+            StartCoroutine(duck());
+        }
+
+        if(Input.GetAxisRaw("Horizontal") != 0){
+            if(Input.GetAxisRaw("Horizontal") > 0){
+                sideMove(false);
+            }else{
+                sideMove(true);
+            }
+        }
+
+        if(Input.GetButton("Jump") && !isJumping){
+            upwards = true;
+            StartCoroutine(jumpTimer());
+        }
 
         if(isJumping){
             jump();
@@ -159,10 +165,12 @@ public class playerController : MonoBehaviour
 
     IEnumerator duck(){
         gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 0.5f, gameObject.transform.localScale.z);   
+        isSliding = true;
 
         yield return new WaitForSeconds(ducktime);
 
-        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 1f, gameObject.transform.localScale.z);   
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 1f, gameObject.transform.localScale.z); 
+        isSliding = false;  
     }
 
     void jump(){        
@@ -196,11 +204,11 @@ public class playerController : MonoBehaviour
         }
     }
     
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Level"))
-        {
-            hp = 0;
-        }
-    }
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (collision.CompareTag("Level"))
+    //     {
+    //         hp = 0;
+    //     }
+    // }
 }
