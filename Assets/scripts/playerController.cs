@@ -192,6 +192,8 @@ public class playerController : MonoBehaviour
         isJumping = false;
     }
 
+    
+
     IEnumerator setGyro(){
         yield return new WaitForSeconds(0.1f);
 
