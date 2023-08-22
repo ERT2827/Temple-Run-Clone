@@ -9,7 +9,7 @@ public class LevelGenerate : MonoBehaviour
     [SerializeField] private GameObject nextSection;
 
 
-    [SerializeField] private float runSpeed = 3;
+    [SerializeField] public float runSpeed = 3;
 
     [SerializeField] private Transform sectionSpawn;
     [SerializeField] private GameObject[] sectionPref;
