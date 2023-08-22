@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
+
     [Header("Player stats")]
     // [SerializeField] private int hp = 1;
     public int currentScore;
@@ -211,4 +212,4 @@ public class playerController : MonoBehaviour
     //         hp = 0;
     //     }
     // }
-}
+ }
