@@ -609,11 +609,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c1adb3f5c64124f8f78851b78d0b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScore: 0
+  isDead: 0
+  scoreCounter: {fileID: 0}
   playerOBJ: {fileID: 1532085060}
-  maxtravel: 2.5
-  sideSpeed: 5
-  jumpHeight: 7
-  jumpTime: 0.6
+  maxtravel: 1.7
+  sideSpeed: 3
+  jumpHeight: 1.7
+  jumpTime: 1.2
+  isJumping: 0
+  isSliding: 0
+  ducktime: 2
   currentSection: {fileID: 1719668691}
   nextSection: {fileID: 0}
   sectionSpawn: {fileID: 2002979339}
@@ -676,6 +682,8 @@ GameObject:
   - component: {fileID: 1532085063}
   - component: {fileID: 1532085062}
   - component: {fileID: 1532085061}
+  - component: {fileID: 1532085066}
+  - component: {fileID: 1532085065}
   m_Layer: 0
   m_Name: playerOBJ
   m_TagString: Untagged
@@ -691,7 +699,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532085060}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
@@ -779,12 +787,12 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!114 &1643808259
+
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643808258}
+  m_PrefabAsset: {fileID: 0}  m_GameObject: {fileID: 1643808258}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
@@ -822,6 +830,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!224 &1643808261
 RectTransform:
+
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -839,6 +848,7 @@ RectTransform:
   m_AnchoredPosition: {x: 296.03873, y: 183.61}
   m_SizeDelta: {x: 252.9163, y: 41.7738}
   m_Pivot: {x: 0.5, y: 0.5}
+
 --- !u!1 &1719668691 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 426178462699225763, guid: 0b134f66d4ffa7641a6ac04cb9b8cb90, type: 3}

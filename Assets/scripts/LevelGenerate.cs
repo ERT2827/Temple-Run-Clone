@@ -20,7 +20,7 @@ public class LevelGenerate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(speedUp());
     }
 
     // Update is called once per frame
@@ -65,5 +65,17 @@ public class LevelGenerate : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator speedUp(){
+        if(runSpeed >= 100){
+            StopCoroutine(speedUp());
+        }
+
+        runSpeed = runSpeed * 1.1f;
+
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(speedUp());
     }
 }
