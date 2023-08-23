@@ -50,7 +50,7 @@ public class LevelGenerate : MonoBehaviour
             {
                 do
                 {
-                    rand = Random.Range(0, 5);
+                    rand = Random.Range(0, 7);
                 } while (rand == 3);
                 nextSection = Instantiate(sectionPref[rand], sectionSpawn);
                 numberOfPlainPlanes++;

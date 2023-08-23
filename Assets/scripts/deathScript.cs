@@ -25,6 +25,7 @@ public class deathScript : MonoBehaviour
         
     }
 
+
     private void OnTriggerEnter(Collider other) {
         // Debug.Log(other);
 
