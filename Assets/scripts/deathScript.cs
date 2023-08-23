@@ -8,11 +8,15 @@ public class deathScript : MonoBehaviour
     
     playerController playerC;
     [SerializeField] private GameObject playerBase;
+
+    beastcontroller beastC;
+    [SerializeField] private GameObject beastBase;
     
     // Start is called before the first frame update
     void Start()
     {
         playerC = playerBase.GetComponent<playerController>();
+        beastC = beastBase.GetComponent<beastcontroller>();
     }
 
     // Update is called once per frame
@@ -21,8 +25,8 @@ public class deathScript : MonoBehaviour
         
     }
 
-private void OnTriggerEnter(Collider other) {
-        Debug.Log(other);
+    private void OnTriggerEnter(Collider other) {
+        // Debug.Log(other);
 
         obstacleType obstaType = other.gameObject.GetComponent<obstacleType>();
 
@@ -35,14 +39,14 @@ private void OnTriggerEnter(Collider other) {
             }else if (obstaType.Type == obstType.duck && !playerC.isSliding)
             {
                 death();
-            }else if (obstaType.Type == obstType.sidestep)
+            }else if (obstaType.Type == obstType.trip)
             {
-                sidestepFail();
+                trip();
             }
         }
     }
 
-    void death(){
+    public void death(){
         playerC.isDead = true;
         
         // PlayerPrefs.SetInt("endScore", playerC.currentScore);
@@ -53,16 +57,12 @@ private void OnTriggerEnter(Collider other) {
 
     }
     
-    void slowDown(){
-        Debug.Log("Slowed");
-    }
-
-    void sidestepFail(){
-        if (Physics.Raycast(gameObject.transform.position, transform.TransformDirection(Vector3.forward), .1f))
-        {
+    void trip(){
+        if(beastC.areAttacking){
             death();
         }else{
-            slowDown();
+            StartCoroutine(beastC.beastAttack());
         }
     }
+
 }

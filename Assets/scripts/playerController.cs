@@ -28,6 +28,9 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private float ducktime = 2f;
 
+    [SerializeField] private GameObject detector;
+    groundChecker GS;
+
     [Header("Level Movement")]
     [SerializeField] private GameObject currentSection;
     [SerializeField] private GameObject nextSection;
@@ -50,24 +53,49 @@ public class playerController : MonoBehaviour
     bool maxOverflow = false;
     bool minOverflow = false;
 
-    [Header("Gyro Debug")]
-    public Text gyrovals;
+    // [Header("Gyro Debug")]
+    // public Text gyrovals;
 
     
     // Start is called before the first frame update
     void Start()
     {
+        GS = detector.GetComponent<groundChecker>();
+        
         Input.gyro.enabled = true;
 
         gyrOperator = gyrMax / 1.7f;
 
         StartCoroutine(setGyro());
-        // Debug.Log(startGyr);
+        Debug.Log(startGyr);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!GS.isGrounded && !isJumping)
+        {
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = true;
+        }else if(GS.isGrounded && !isJumping && !isSliding){
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = false;
+
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0.003f, gameObject.transform.position.z);
+            playerOBJ.transform.position = new Vector3(gameObject.transform.position.x, 1.08f, gameObject.transform.position.z);
+        }else if(GS.isGrounded && !isJumping && isSliding){
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = false;
+
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0.003f, gameObject.transform.position.z);
+            playerOBJ.transform.position = new Vector3(gameObject.transform.position.x, 0.5f, gameObject.transform.position.z);
+        }
+        
+        #if UNITY_ANDROID
+
         //Mobile Controls
         // if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
         //     startTouchPos = Input.GetTouch(0).position;
@@ -85,10 +113,13 @@ public class playerController : MonoBehaviour
         //         StartCoroutine(duck());
         //     }
         // }
-        
-        // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
+        // //gyro calc
         // gyrAng = Input.gyro.attitude.eulerAngles;
+        
+        // // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
+
+        
         
         // if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
         // {
@@ -97,7 +128,7 @@ public class playerController : MonoBehaviour
         //     if(gyrAng.x < maxtravel && maxOverflow){
         //         float fakeAng = gyrAng.x + (360 - maxtravel);
         //         deltaAngle = fakeAng - gyrAng.x;
-        //     }else if(gyrAng.x > (360 - maxtravel) && maxOverflow){
+        //     }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
         //         float fakeAng = gyrAng.x - (360 - maxtravel);
         //         deltaAngle = fakeAng - gyrAng.x;
         //     }else{
@@ -114,6 +145,10 @@ public class playerController : MonoBehaviour
         // }else{
         //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
         // }
+
+        #endif
+
+        #if UNITY_STANDALONE_WIN
 
         //PC Backup
         if (Input.GetMouseButtonDown(0)){
@@ -151,9 +186,57 @@ public class playerController : MonoBehaviour
             StartCoroutine(jumpTimer());
         }
 
+        #endif
+
+        #if UNITY_EDITOR
+
+        //PC Backup
+        if (Input.GetMouseButtonDown(0)){
+            startTouchPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            endTouchPos = Input.mousePosition;
+
+            if (endTouchPos.y > startTouchPos.y)
+            {
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                StartCoroutine(duck());
+            }
+        }
+        
+        if(Input.GetKey(KeyCode.S)){
+            StartCoroutine(duck());
+        }
+
+        if(Input.GetAxisRaw("Horizontal") != 0){
+            if(Input.GetAxisRaw("Horizontal") > 0){
+                sideMove(false);
+            }else{
+                sideMove(true);
+            }
+        }
+
+        if(Input.GetButton("Jump") && !isJumping){
+            upwards = true;
+            StartCoroutine(jumpTimer());
+        }
+
+        #endif
+
         if(isJumping){
             jump();
         }
+    }
+
+    private void FixedUpdate() {
+        currentScore += 1;
+
+        scoreCounter.text = "Score: " + currentScore.ToString();
     }
 
     void sideMove(bool direction){
@@ -198,7 +281,6 @@ public class playerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         startGyr = Input.gyro.attitude.eulerAngles;
-
 
         if(startGyr.x + gyrMax > 360){
             maxOverflow = true;
