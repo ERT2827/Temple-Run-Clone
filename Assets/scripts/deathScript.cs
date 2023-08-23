@@ -22,7 +22,7 @@ public class deathScript : MonoBehaviour
     }
 
 private void OnTriggerEnter(Collider other) {
-        Debug.Log(other);
+        // Debug.Log(other);
 
         obstacleType obstaType = other.gameObject.GetComponent<obstacleType>();
 
@@ -42,7 +42,7 @@ private void OnTriggerEnter(Collider other) {
         }
     }
 
-    void death(){
+    public void death(){
         playerC.isDead = true;
         
         // PlayerPrefs.SetInt("endScore", playerC.currentScore);

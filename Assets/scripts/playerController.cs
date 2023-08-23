@@ -28,6 +28,9 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private float ducktime = 2f;
 
+    [SerializeField] private GameObject detector;
+    groundChecker GS;
+
     [Header("Level Movement")]
     [SerializeField] private GameObject currentSection;
     [SerializeField] private GameObject nextSection;
@@ -53,67 +56,101 @@ public class playerController : MonoBehaviour
     [Header("Gyro Debug")]
     public Text gyrovals;
 
+    public Animator anim;
+
     
     // Start is called before the first frame update
     void Start()
     {
+        GS = detector.GetComponent<groundChecker>();
+        
         Input.gyro.enabled = true;
 
         gyrOperator = gyrMax / 1.7f;
 
         StartCoroutine(setGyro());
-        // Debug.Log(startGyr);
+        Debug.Log(startGyr);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!GS.isGrounded && !isJumping)
+        {
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = true;
+        }else if(GS.isGrounded && !isJumping && !isSliding){
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = false;
+
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0.003f, gameObject.transform.position.z);
+            playerOBJ.transform.position = new Vector3(gameObject.transform.position.x, 1.08f, gameObject.transform.position.z);
+        }else if(GS.isGrounded && !isJumping && isSliding){
+            Rigidbody RB = playerOBJ.GetComponent<Rigidbody>();
+            
+            RB.useGravity = false;
+
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0.003f, gameObject.transform.position.z);
+            playerOBJ.transform.position = new Vector3(gameObject.transform.position.x, 0.5f, gameObject.transform.position.z);
+        }
+        
+        #if UNITY_ANDROID
+
         //Mobile Controls
-        // if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
-        //     startTouchPos = Input.GetTouch(0).position;
-        // }
+        if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
+            startTouchPos = Input.GetTouch(0).position;
+        }
 
-        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        // {
-        //     endTouchPos = Input.GetTouch(0).position;
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            endTouchPos = Input.GetTouch(0).position;
 
-        //     if (endTouchPos.y > startTouchPos.y){
-        //         upwards = true;
-        //         StartCoroutine(jumpTimer());
-        //     }else if (endTouchPos.y < startTouchPos.y)
-        //     {
-        //         StartCoroutine(duck());
-        //     }
-        // }
+            if (endTouchPos.y > startTouchPos.y){
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                StartCoroutine(duck());
+            }
+        }
+
+        //gyro calc
+        gyrAng = Input.gyro.attitude.eulerAngles;
         
-        // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
+        gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
-        // gyrAng = Input.gyro.attitude.eulerAngles;
         
-        // if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
-        // {
-        //     float deltaAngle;
+        
+        if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
+        {
+            float deltaAngle;
             
-        //     if(gyrAng.x < maxtravel && maxOverflow){
-        //         float fakeAng = gyrAng.x + (360 - maxtravel);
-        //         deltaAngle = fakeAng - gyrAng.x;
-        //     }else if(gyrAng.x > (360 - maxtravel) && maxOverflow){
-        //         float fakeAng = gyrAng.x - (360 - maxtravel);
-        //         deltaAngle = fakeAng - gyrAng.x;
-        //     }else{
-        //         deltaAngle = startGyr.x - gyrAng.x;
-        //     }
+            if(gyrAng.x < maxtravel && maxOverflow){
+                float fakeAng = gyrAng.x + (360 - maxtravel);
+                deltaAngle = fakeAng - gyrAng.x;
+            }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
+                float fakeAng = gyrAng.x - (360 - maxtravel);
+                deltaAngle = fakeAng - gyrAng.x;
+            }else{
+                deltaAngle = startGyr.x - gyrAng.x;
+            }
             
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
 
 
-        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
-        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
-        // }else{
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
-        // }
+        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
+        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
+        }else{
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
+        }
+
+        #endif
+
+        #if UNITY_STANDALONE_WIN
 
         //PC Backup
         if (Input.GetMouseButtonDown(0)){
@@ -151,9 +188,53 @@ public class playerController : MonoBehaviour
             StartCoroutine(jumpTimer());
         }
 
+        #endif
+
+        #if UNITY_EDITOR
+
+        //PC Backup
+        if (Input.GetMouseButtonDown(0)){
+            startTouchPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            endTouchPos = Input.mousePosition;
+
+            if (endTouchPos.y > startTouchPos.y)
+            {
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                StartCoroutine(duck());
+            }
+        }
+        
+        if(Input.GetKey(KeyCode.S)){
+            StartCoroutine(duck());
+        }
+
+        if(Input.GetAxisRaw("Horizontal") != 0){
+            if(Input.GetAxisRaw("Horizontal") > 0){
+                sideMove(false);
+            }else{
+                sideMove(true);
+            }
+        }
+
+        if(Input.GetButton("Jump") && !isJumping){
+            upwards = true;
+            StartCoroutine(jumpTimer());
+        }
+
+        #endif
+
         if(isJumping){
             jump();
         }
+
+        anim.SetBool("slide", isSliding);
     }
 
     void sideMove(bool direction){
@@ -198,7 +279,6 @@ public class playerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         startGyr = Input.gyro.attitude.eulerAngles;
-
 
         if(startGyr.x + gyrMax > 360){
             maxOverflow = true;
