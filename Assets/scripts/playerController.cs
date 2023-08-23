@@ -53,8 +53,8 @@ public class playerController : MonoBehaviour
     bool maxOverflow = false;
     bool minOverflow = false;
 
-    [Header("Gyro Debug")]
-    public Text gyrovals;
+    // [Header("Gyro Debug")]
+    // public Text gyrovals;
 
     
     // Start is called before the first frame update
@@ -97,54 +97,54 @@ public class playerController : MonoBehaviour
         #if UNITY_ANDROID
 
         //Mobile Controls
-        if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
-            startTouchPos = Input.GetTouch(0).position;
-        }
+        // if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
+        //     startTouchPos = Input.GetTouch(0).position;
+        // }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            endTouchPos = Input.GetTouch(0).position;
+        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        // {
+        //     endTouchPos = Input.GetTouch(0).position;
 
-            if (endTouchPos.y > startTouchPos.y){
-                upwards = true;
-                StartCoroutine(jumpTimer());
-            }else if (endTouchPos.y < startTouchPos.y)
-            {
-                StartCoroutine(duck());
-            }
-        }
+        //     if (endTouchPos.y > startTouchPos.y){
+        //         upwards = true;
+        //         StartCoroutine(jumpTimer());
+        //     }else if (endTouchPos.y < startTouchPos.y)
+        //     {
+        //         StartCoroutine(duck());
+        //     }
+        // }
 
-        //gyro calc
-        gyrAng = Input.gyro.attitude.eulerAngles;
+        // //gyro calc
+        // gyrAng = Input.gyro.attitude.eulerAngles;
         
-        gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
+        // // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
         
         
-        if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
-        {
-            float deltaAngle;
+        // if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
+        // {
+        //     float deltaAngle;
             
-            if(gyrAng.x < maxtravel && maxOverflow){
-                float fakeAng = gyrAng.x + (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
-                float fakeAng = gyrAng.x - (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else{
-                deltaAngle = startGyr.x - gyrAng.x;
-            }
+        //     if(gyrAng.x < maxtravel && maxOverflow){
+        //         float fakeAng = gyrAng.x + (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.x;
+        //     }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
+        //         float fakeAng = gyrAng.x - (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.x;
+        //     }else{
+        //         deltaAngle = startGyr.x - gyrAng.x;
+        //     }
             
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
 
 
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
-        }else{
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
-        }
+        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
+        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
+        // }else{
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
+        // }
 
         #endif
 
@@ -231,6 +231,12 @@ public class playerController : MonoBehaviour
         if(isJumping){
             jump();
         }
+    }
+
+    private void FixedUpdate() {
+        currentScore += 1;
+
+        scoreCounter.text = "Score: " + currentScore.ToString();
     }
 
     void sideMove(bool direction){

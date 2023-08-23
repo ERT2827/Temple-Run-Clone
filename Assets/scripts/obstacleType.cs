@@ -9,7 +9,8 @@ public enum obstType
     jump,
     turn,
     sidestep,
-    fall
+    fall,
+    trip
 }
 
 public class obstacleType : MonoBehaviour{
