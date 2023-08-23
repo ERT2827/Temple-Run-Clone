@@ -162,6 +162,7 @@ MonoBehaviour:
   - {fileID: 1693511082662722111, guid: 84c639ab51d53404eb34123b07c9bcfc, type: 3}
   - {fileID: 426178462699225763, guid: 0b134f66d4ffa7641a6ac04cb9b8cb90, type: 3}
   - {fileID: 1982317593577980959, guid: 6297fcbdca1d1b44589b3968d18ff73c, type: 3}
+  - {fileID: 5094032115534981574, guid: 63361ffa652da68469953005af0dc582, type: 3}
   numberOfPlainPlanes: 0
 --- !u!4 &201565076
 Transform:
