@@ -56,6 +56,8 @@ public class playerController : MonoBehaviour
     [Header("Gyro Debug")]
     public Text gyrovals;
 
+    public Animator anim;
+
     
     // Start is called before the first frame update
     void Start()
@@ -231,6 +233,8 @@ public class playerController : MonoBehaviour
         if(isJumping){
             jump();
         }
+
+        anim.SetBool("slide", isSliding);
     }
 
     void sideMove(bool direction){
