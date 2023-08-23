@@ -51,7 +51,7 @@ public class playerController : MonoBehaviour
     float gyrOffset;
 
     bool maxOverflow = false;
-    bool minOverflow = false;
+    bool minOverflow = false; 
 
     [Header("Gyro Debug")]
     public Text gyrovals;
