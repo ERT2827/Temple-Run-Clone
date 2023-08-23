@@ -53,8 +53,8 @@ public class playerController : MonoBehaviour
     bool maxOverflow = false;
     bool minOverflow = false; 
 
-    [Header("Gyro Debug")]
-    public Text gyrovals;
+    // [Header("Gyro Debug")]
+    // public Text gyrovals;
 
     public Animator anim;
 
@@ -152,6 +152,50 @@ public class playerController : MonoBehaviour
 
         #if UNITY_STANDALONE_WIN
 
+        #endif
+
+        #if UNITY_STANDALONE_WIN
+
+        //PC Backup
+        if (Input.GetMouseButtonDown(0)){
+            startTouchPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            endTouchPos = Input.mousePosition;
+
+            if (endTouchPos.y > startTouchPos.y)
+            {
+                upwards = true;
+                StartCoroutine(jumpTimer());
+            }else if (endTouchPos.y < startTouchPos.y)
+            {
+                StartCoroutine(duck());
+            }
+        }
+        
+        if(Input.GetKey(KeyCode.S)){
+            StartCoroutine(duck());
+        }
+
+        if(Input.GetAxisRaw("Horizontal") != 0){
+            if(Input.GetAxisRaw("Horizontal") > 0){
+                sideMove(false);
+            }else{
+                sideMove(true);
+            }
+        }
+
+        if(Input.GetButton("Jump") && !isJumping){
+            upwards = true;
+            StartCoroutine(jumpTimer());
+        }
+
+        #endif
+
+        #if UNITY_EDITOR
+
         //PC Backup
         if (Input.GetMouseButtonDown(0)){
             startTouchPos = Input.mousePosition;
@@ -235,6 +279,12 @@ public class playerController : MonoBehaviour
         }
 
         anim.SetBool("slide", isSliding);
+    }
+
+    private void FixedUpdate() {
+        currentScore += 1;
+
+        scoreCounter.text = "Score: " + currentScore.ToString();
     }
 
     void sideMove(bool direction){
