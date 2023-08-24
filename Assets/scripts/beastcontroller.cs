@@ -29,7 +29,7 @@ public class beastcontroller : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         areAttacking = false;
-        anim.SetBool("isAttacking", true);
+        anim.SetBool("isAttacking", false);
     }
 
     IEnumerator startrun(){
