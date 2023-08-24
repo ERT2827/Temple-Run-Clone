@@ -119,7 +119,7 @@ public class playerController : MonoBehaviour
         //gyro calc
         gyrAng = Input.gyro.attitude.eulerAngles;
         
-        gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
+        // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
         
         
