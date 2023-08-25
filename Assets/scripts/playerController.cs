@@ -154,11 +154,11 @@ public class playerController : MonoBehaviour
 
 
         }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z > 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 1.7f);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
         }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z < 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, -1.7f);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
         }else{
-            gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 0);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
         }
 
         #endif
@@ -299,9 +299,9 @@ public class playerController : MonoBehaviour
 
         startGyr = Input.gyro.attitude.eulerAngles;
 
-        if(startGyr.x + gyrMax > 360){
+        if(startGyr.y + gyrMax > 360){
             maxOverflow = true;
-        }else if(startGyr.x - gyrMax < 0){
+        }else if(startGyr.y - gyrMax < 0){
             minOverflow = true;
         }
     }
