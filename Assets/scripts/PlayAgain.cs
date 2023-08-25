@@ -33,6 +33,6 @@ public class PlayAgain : MonoBehaviour
 
     public void LoadPlayScene()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("samplescene", LoadSceneMode.Single);
     }
 }
