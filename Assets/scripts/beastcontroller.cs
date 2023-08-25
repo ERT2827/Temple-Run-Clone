@@ -6,6 +6,7 @@ using UnityEngine.Animations;
 public class beastcontroller : MonoBehaviour
 {
     Animator anim;
+    public Animator cameraAnim;
 
     public bool areAttacking;
     
@@ -19,7 +20,7 @@ public class beastcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        cameraAnim.SetBool("beasts", areAttacking);
     }
 
     public IEnumerator beastAttack(){
@@ -29,7 +30,7 @@ public class beastcontroller : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         areAttacking = false;
-        anim.SetBool("isAttacking", true);
+        anim.SetBool("isAttacking", false);
     }
 
     IEnumerator startrun(){

@@ -15,10 +15,12 @@ public class groundChecker : MonoBehaviour
 
         foreach (GameObject i in groundPieces)
         {
-            if(i.tag == "ground")
-            {
-                grounds += 1;
+            if(i != null){
+                if(i.tag == "ground"){
+                    grounds += 1;
+                }
             }
+            
         }
 
         if(grounds > 0){

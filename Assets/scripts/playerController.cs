@@ -8,10 +8,10 @@ public class playerController : MonoBehaviour
 
     [Header("Player stats")]
     // [SerializeField] private int hp = 1;
-    public int currentScore;
+    // public int currentScore;
     public bool isDead = false;
 
-    [SerializeField] private Text scoreCounter;
+    // [SerializeField] private Text scoreCounter;
     
     
     [Header("Player Movement")]
@@ -102,102 +102,58 @@ public class playerController : MonoBehaviour
         #if UNITY_ANDROID
 
         //Mobile Controls
-        if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
-            startTouchPos = Input.GetTouch(0).position;
-        }
+        // if (Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began){
+        //     startTouchPos = Input.GetTouch(0).position;
+        // }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            endTouchPos = Input.GetTouch(0).position;
+        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        // {
+        //     endTouchPos = Input.GetTouch(0).position;
 
-            if (endTouchPos.y > startTouchPos.y){
-                upwards = true;
-                StartCoroutine(jumpTimer());
-            }else if (endTouchPos.y < startTouchPos.y)
-            {
-                StartCoroutine(duck());
-            }
-        }
+        //     if (endTouchPos.y > startTouchPos.y){
+        //         upwards = true;
+        //         StartCoroutine(jumpTimer());
+        //     }else if (endTouchPos.y < startTouchPos.y)
+        //     {
+        //         StartCoroutine(duck());
+        //     }
+        // }
 
-        //gyro calc
-        gyrAng = Input.gyro.attitude.eulerAngles;
+        // //gyro calc
+        // gyrAng = Input.gyro.attitude.eulerAngles;
         
-        gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
+        // // gyrovals.text = startGyr.x.ToString() + " X " + gyrAng.x.ToString() + " Offset " + gyrOffset.ToString();
 
         
         
-        if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
-        {
-            float deltaAngle;
+        // if (Mathf.Abs(gyrAng.y - startGyr.y) < gyrMax)
+        // {
+        //     float deltaAngle;
             
-            if(gyrAng.x < maxtravel && maxOverflow){
-                float fakeAng = gyrAng.x + (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
-                float fakeAng = gyrAng.x - (360 - maxtravel);
-                deltaAngle = fakeAng - gyrAng.x;
-            }else{
-                deltaAngle = startGyr.x - gyrAng.x;
-            }
+        //     if(gyrAng.y < maxtravel && maxOverflow){
+        //         float fakeAng = gyrAng.y + (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.y;
+        //     }else if(gyrAng.y > (360 - maxtravel) && minOverflow){
+        //         float fakeAng = gyrAng.y - (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.y;
+        //     }else{
+        //         deltaAngle = startGyr.y - gyrAng.y;
+        //     }
             
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
 
 
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
-        }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
-        }else{
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
-        }
+        // }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z > 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 1.7f);
+        // }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z < 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, -1.7f);
+        // }else{
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 0);
+        // }
 
         #endif
 
         #if UNITY_STANDALONE_WIN
-
-        #endif
-
-        #if UNITY_STANDALONE_WIN
-
-        //PC Backup
-        if (Input.GetMouseButtonDown(0)){
-            startTouchPos = Input.mousePosition;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            endTouchPos = Input.mousePosition;
-
-            if (endTouchPos.y > startTouchPos.y)
-            {
-                upwards = true;
-                StartCoroutine(jumpTimer());
-            }else if (endTouchPos.y < startTouchPos.y)
-            {
-                StartCoroutine(duck());
-            }
-        }
-        
-        if(Input.GetKey(KeyCode.S)){
-            StartCoroutine(duck());
-        }
-
-        if(Input.GetAxisRaw("Horizontal") != 0){
-            if(Input.GetAxisRaw("Horizontal") > 0){
-                sideMove(false);
-            }else{
-                sideMove(true);
-            }
-        }
-
-        if(Input.GetButton("Jump") && !isJumping){
-            upwards = true;
-            StartCoroutine(jumpTimer());
-        }
-
-        #endif
-
-        #if UNITY_EDITOR
 
         //PC Backup
         if (Input.GetMouseButtonDown(0)){
@@ -285,9 +241,9 @@ public class playerController : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        currentScore += 1;
+        // currentScore += 1;
 
-        scoreCounter.text = "Score: " + currentScore.ToString();
+        // scoreCounter.text = "Score: " + currentScore.ToString();
     }
 
     void sideMove(bool direction){

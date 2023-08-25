@@ -11,12 +11,16 @@ public class deathScript : MonoBehaviour
 
     beastcontroller beastC;
     [SerializeField] private GameObject beastBase;
+
+    Ui gooey;
+    [SerializeField] private GameObject uiBase;
     
     // Start is called before the first frame update
     void Start()
     {
         playerC = playerBase.GetComponent<playerController>();
         beastC = beastBase.GetComponent<beastcontroller>();
+        gooey = uiBase.GetComponent<Ui>();
     }
 
     // Update is called once per frame
@@ -50,7 +54,7 @@ public class deathScript : MonoBehaviour
     public void death(){
         playerC.isDead = true;
         
-        // PlayerPrefs.SetInt("endScore", playerC.currentScore);
+        PlayerPrefs.SetInt("endScore", (gooey.score * gooey.multiplyer));
 
         SceneManager.LoadScene("endscreen", LoadSceneMode.Single);
         
