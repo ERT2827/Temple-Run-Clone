@@ -58,7 +58,10 @@ public class playerController : MonoBehaviour
 
     public Animator anim;
 
-    
+    public float moveSpeed = 10f; // Adjust the value as needed
+
+
+
     // Start is called before the first frame update
     void Start()
     {
