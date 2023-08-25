@@ -27,7 +27,7 @@ public class Ui : MonoBehaviour
         score++;
 
         int functionalScore = score * multiplyer;
-        scoreText.text = "Score: " + functionalScore.ToString() + " Multiplyer: " + multiplyer.ToString();
+        scoreText.text = "Score: " + functionalScore.ToString() + "\nMultiplyer: " + multiplyer.ToString();
 
         coinsText.text = "Coin: " + coins.ToString();
 
