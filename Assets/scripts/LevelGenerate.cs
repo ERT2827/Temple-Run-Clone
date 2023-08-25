@@ -9,17 +9,18 @@ public class LevelGenerate : MonoBehaviour
     [SerializeField] private GameObject nextSection;
 
 
-    [SerializeField] private float runSpeed = 3;
+    [SerializeField] public float runSpeed = 3;
 
     [SerializeField] private Transform sectionSpawn;
     [SerializeField] private GameObject[] sectionPref;
 
+    [SerializeField]
     int numberOfPlainPlanes = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(speedUp());
     }
 
     // Update is called once per frame
@@ -31,15 +32,30 @@ public class LevelGenerate : MonoBehaviour
 
         if (nextSection == null)
         {
-            int rand = Random.Range(0, 3);
-            nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+           // int rand = Random.Range(0, 3);
+            nextSection = Instantiate(sectionPref[3], sectionSpawn);
         }
         else if (currentSection.transform.position.x < -26)
         {
-            int rand = Random.Range(0, 3);
+            int rand;
             Destroy(currentSection);
             currentSection = nextSection;
-            nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+
+            if (numberOfPlainPlanes == 1)
+            {
+                rand = 3;
+                nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+                numberOfPlainPlanes = 0;
+            } else
+            {
+                do
+                {
+                    rand = Random.Range(0, 7);
+                } while (rand == 3);
+                nextSection = Instantiate(sectionPref[rand], sectionSpawn);
+                numberOfPlainPlanes++;
+            }
+            
         }
         else
         {
@@ -49,5 +65,17 @@ public class LevelGenerate : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator speedUp(){
+        if(runSpeed >= 100){
+            StopCoroutine(speedUp());
+        }
+
+        runSpeed = runSpeed * 1.1f;
+
+        yield return new WaitForSeconds(10.7f);
+
+        StartCoroutine(speedUp());
     }
 }
