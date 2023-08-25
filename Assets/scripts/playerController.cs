@@ -123,29 +123,29 @@ public class playerController : MonoBehaviour
 
         
         
-        // if (Mathf.Abs(gyrAng.x - startGyr.x) < gyrMax)
+        // if (Mathf.Abs(gyrAng.y - startGyr.y) < gyrMax)
         // {
         //     float deltaAngle;
             
-        //     if(gyrAng.x < maxtravel && maxOverflow){
-        //         float fakeAng = gyrAng.x + (360 - maxtravel);
-        //         deltaAngle = fakeAng - gyrAng.x;
-        //     }else if(gyrAng.x > (360 - maxtravel) && minOverflow){
-        //         float fakeAng = gyrAng.x - (360 - maxtravel);
-        //         deltaAngle = fakeAng - gyrAng.x;
+        //     if(gyrAng.y < maxtravel && maxOverflow){
+        //         float fakeAng = gyrAng.y + (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.y;
+        //     }else if(gyrAng.y > (360 - maxtravel) && minOverflow){
+        //         float fakeAng = gyrAng.y - (360 - maxtravel);
+        //         deltaAngle = fakeAng - gyrAng.y;
         //     }else{
-        //         deltaAngle = startGyr.x - gyrAng.x;
+        //         deltaAngle = startGyr.y - gyrAng.y;
         //     }
             
         //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, deltaAngle / gyrOperator);
 
 
-        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z > 0){
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 1.7f);
-        // }else if(Mathf.Abs(gyrAng.x - startGyr.x) > gyrMax && gameObject.transform.position.z < 0){
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -1.7f);
+        // }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z > 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 1.7f);
+        // }else if(Mathf.Abs(gyrAng.y - startGyr.y) > gyrMax && gameObject.transform.position.z < 0){
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, -1.7f);
         // }else{
-        //     gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
+        //     gameObject.transform.position = new Vector3(gameObject.transform.position.y, gameObject.transform.position.y, 0);
         // }
 
         #endif
