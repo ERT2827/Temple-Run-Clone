@@ -17,6 +17,9 @@ public class LevelGenerate : MonoBehaviour
     [SerializeField]
     int numberOfPlainPlanes = 0;
 
+    // public bool boostActivated = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +53,7 @@ public class LevelGenerate : MonoBehaviour
             {
                 do
                 {
-                    rand = Random.Range(0, 7);
+                    rand = Random.Range(0, 10);
                 } while (rand == 3);
                 nextSection = Instantiate(sectionPref[rand], sectionSpawn);
                 numberOfPlainPlanes++;
